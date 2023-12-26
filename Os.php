@@ -17,7 +17,7 @@ final class Os implements ResourceDetector {
     public function getResource(): Resource {
         $os = [
             'os.type' => strtolower(PHP_OS_FAMILY),
-            'os.description' => php_uname('v'),
+            'os.description' => php_uname(),
             'os.name' => PHP_OS,
             'os.version' => php_uname('r'),
         ];

@@ -4,23 +4,29 @@
     "keywords": ["opentelemetry", "otel", "sdk"],
     "require": {
         "php-64bit": "^8.1",
-        "amphp/amp": "^5.0",
         "amphp/byte-stream": "^2.0",
-        "amphp/file": "^3.0",
         "amphp/process": "^2.0",
         "tbachert/otel-sdk-common": "^0.1"
     },
     "autoload": {
         "psr-4": {
             "Nevay\\OtelSDK\\Common\\ResourceDetector\\": ""
-        },
-        "files": [
-            "functions.php"
-        ]
+        }
     },
     "extra": {
         "branch-alias": {
             "dev-main": "0.1.x-dev"
+        },
+        "spi": {
+            "Nevay\\OtelSDK\\Common\\ResourceDetector": [
+                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Composer",
+                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Deployment",
+                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Extension",
+                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Host",
+                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Os",
+                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Process",
+                "Nevay\\OtelSDK\\Common\\ResourceDetector\\ProcessRuntime"
+            ]
         }
     }
 }

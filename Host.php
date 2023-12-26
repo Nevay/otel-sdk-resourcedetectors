@@ -3,12 +3,12 @@ namespace Nevay\OtelSDK\Common\ResourceDetector;
 
 use Amp\ByteStream;
 use Amp\ByteStream\BufferException;
-use Amp\File;
 use Amp\Process\Process;
 use Amp\Process\ProcessException;
 use Nevay\OtelSDK\Common\Attributes;
 use Nevay\OtelSDK\Common\Resource;
 use Nevay\OtelSDK\Common\ResourceDetector;
+use function fopen;
 use function php_uname;
 use function trim;
 
@@ -68,8 +68,11 @@ final class Host implements ResourceDetector {
 
     private static function read(string $file): ?string {
         try {
-            return File\read($file);
-        } catch (File\FilesystemException) {}
+            if ($handle = @fopen($file, 'rb')) {
+                $stream = new ByteStream\ReadableResourceStream($handle);
+                return ByteStream\buffer($stream);
+            }
+        } catch (ByteStream\StreamException) {}
 
         return null;
     }
