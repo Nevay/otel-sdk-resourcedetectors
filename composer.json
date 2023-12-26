@@ -1,0 +1,26 @@
+{
+    "name": "tbachert/otel-sdk-resourcedetectors",
+    "description": "OpenTelemetry SDK resource detectors",
+    "keywords": ["opentelemetry", "otel", "sdk"],
+    "require": {
+        "php-64bit": "^8.1",
+        "amphp/amp": "^5.0",
+        "amphp/byte-stream": "^2.0",
+        "amphp/file": "^3.0",
+        "amphp/process": "^2.0",
+        "tbachert/otel-sdk-common": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nevay\\OtelSDK\\Common\\ResourceDetector\\": ""
+        },
+        "files": [
+            "functions.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    }
+}
