@@ -1,15 +1,14 @@
 <?php declare(strict_types=1);
 namespace Nevay\OtelSDK\Common\ResourceDetector;
 
-use Amp\ByteStream;
-use Amp\ByteStream\BufferException;
-use Amp\Process\Process;
-use Amp\Process\ProcessException;
 use Nevay\OtelSDK\Common\Attributes;
 use Nevay\OtelSDK\Common\Resource;
 use Nevay\OtelSDK\Common\ResourceDetector;
-use function fopen;
+use function file_get_contents;
 use function php_uname;
+use function restore_error_handler;
+use function set_error_handler;
+use function shell_exec;
 use function trim;
 
 /**
@@ -55,24 +54,27 @@ final class Host implements ResourceDetector {
     }
 
     private static function exec(string $command): ?string {
+        set_error_handler(static fn() => null);
         try {
-            $process = Process::start($command);
-            $content = Bytestream\buffer($process->getStdout());
-            if ($process->join() === 0) {
-                return $content;
+            if (($output = shell_exec($command)) !== false) {
+                return $output;
             }
-        } catch (ProcessException | BufferException) {}
+        } finally {
+            restore_error_handler();
+        }
 
         return null;
     }
 
     private static function read(string $file): ?string {
+        set_error_handler(static fn() => null);
         try {
-            if ($handle = @fopen($file, 'rb')) {
-                $stream = new ByteStream\ReadableResourceStream($handle);
-                return ByteStream\buffer($stream);
+            if (($content = file_get_contents($file)) !== false) {
+                return $content;
             }
-        } catch (ByteStream\StreamException) {}
+        } finally {
+            restore_error_handler();
+        }
 
         return null;
     }

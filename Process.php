@@ -1,15 +1,17 @@
 <?php declare(strict_types=1);
 namespace Nevay\OtelSDK\Common\ResourceDetector;
 
-use Amp\ByteStream;
 use Nevay\OtelSDK\Common\Attributes;
 use Nevay\OtelSDK\Common\Resource;
 use Nevay\OtelSDK\Common\ResourceDetector;
+use function array_pop;
 use function basename;
+use function explode;
 use function extension_loaded;
-use function fopen;
+use function file_get_contents;
 use function getmypid;
-use function iterator_to_array;
+use function restore_error_handler;
+use function set_error_handler;
 use const PHP_BINARY;
 use const PHP_OS_FAMILY;
 
@@ -43,14 +45,18 @@ final class Process implements ResourceDetector {
 
     private static function commandLine(): array {
         if (PHP_OS_FAMILY === 'Linux') {
+            set_error_handler(static fn() => null);
             try {
-                if ($handle = @fopen('/proc/self/cmdline', 'rb')) {
-                    $stream = new ByteStream\ReadableResourceStream($handle);
-                    if ($parsed = iterator_to_array(ByteStream\split($stream, "\0"))) {
+                if (($content = file_get_contents('/proc/self/cmdline')) !== false) {
+                    $parsed = explode("\0", $content);
+                    array_pop($parsed);
+                    if ($parsed) {
                         return $parsed;
                     }
                 }
-            } catch (ByteStream\StreamException) {}
+            } finally {
+                restore_error_handler();
+            }
         }
 
         return [PHP_BINARY, ...$_SERVER['argv']];
