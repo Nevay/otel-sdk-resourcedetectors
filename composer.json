@@ -11,7 +11,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Nevay\\OtelSDK\\Common\\ResourceDetector\\": ""
+            "Nevay\\OTelSDK\\Common\\ResourceDetector\\": ""
         }
     },
     "extra": {
@@ -19,14 +19,14 @@
             "dev-main": "0.1.x-dev"
         },
         "spi": {
-            "Nevay\\OtelSDK\\Common\\ResourceDetector": [
-                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Composer",
-                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Deployment",
-                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Extension",
-                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Host",
-                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Os",
-                "Nevay\\OtelSDK\\Common\\ResourceDetector\\Process",
-                "Nevay\\OtelSDK\\Common\\ResourceDetector\\ProcessRuntime"
+            "Nevay\\OTelSDK\\Common\\ResourceDetector": [
+                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Composer",
+                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Deployment",
+                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Extension",
+                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Host",
+                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Os",
+                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Process",
+                "Nevay\\OTelSDK\\Common\\ResourceDetector\\ProcessRuntime"
             ]
         }
     }

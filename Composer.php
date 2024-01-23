@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
-namespace Nevay\OtelSDK\Common\ResourceDetector;
+namespace Nevay\OTelSDK\Common\ResourceDetector;
 
 use Composer\InstalledVersions;
-use Nevay\OtelSDK\Common\Attributes;
-use Nevay\OtelSDK\Common\Resource;
-use Nevay\OtelSDK\Common\ResourceDetector;
+use Nevay\OTelSDK\Common\Attributes;
+use Nevay\OTelSDK\Common\Resource;
+use Nevay\OTelSDK\Common\ResourceDetector;
 use function class_exists;
 
 /**
