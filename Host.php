@@ -47,7 +47,7 @@ final class Host implements ResourceDetector {
                     CMD),
             'Windows'
                 => self::exec(<<<'CMD'
-                    powershell.exe -Command (Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Cryptography -Name MachineGuid).MachineGuid
+                    powershell.exe -Command "Get-ItemPropertyValue -Path HKLM:\SOFTWARE\Microsoft\Cryptography -Name MachineGuid"
                     CMD),
             default => null,
         };
