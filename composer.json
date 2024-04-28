@@ -5,9 +5,6 @@
     "license": "Apache-2.0",
     "require": {
         "php-64bit": "^8.1",
-        "amphp/byte-stream": "^2.0",
-        "amphp/file": "^3.0",
-        "amphp/process": "^2.0",
         "tbachert/otel-sdk-common": "^0.1"
     },
     "autoload": {

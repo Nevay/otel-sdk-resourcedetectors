@@ -24,7 +24,7 @@ final class Os implements ResourceDetector {
 
         return new Resource(
             new Attributes($os),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.24.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.25.0',
         );
     }
 }

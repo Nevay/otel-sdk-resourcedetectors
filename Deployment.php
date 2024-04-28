@@ -18,7 +18,7 @@ final class Deployment implements ResourceDetector {
 
         return new Resource(
             new Attributes($deployment),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.24.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.25.0',
         );
     }
 }
