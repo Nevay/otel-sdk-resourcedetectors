@@ -5,6 +5,7 @@
     "license": "Apache-2.0",
     "require": {
         "php-64bit": "^8.1",
+        "composer-runtime-api": "^2.0",
         "tbachert/otel-sdk-common": "^0.1"
     },
     "autoload": {
