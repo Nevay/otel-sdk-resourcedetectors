@@ -20,6 +20,7 @@
         "spi": {
             "Nevay\\OTelSDK\\Common\\ResourceDetector": [
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Composer",
+                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Container",
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Deployment",
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Extension",
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Host",
