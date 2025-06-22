@@ -9,10 +9,14 @@ use function php_uname;
 use function restore_error_handler;
 use function set_error_handler;
 use function shell_exec;
+use function strtolower;
 use function trim;
+use const PHP_OS;
+use const PHP_OS_FAMILY;
 
 /**
  * @see https://opentelemetry.io/docs/specs/semconv/resource/host/
+ * @see https://opentelemetry.io/docs/specs/semconv/resource/os/
  */
 final class Host implements ResourceDetector {
 
@@ -23,6 +27,10 @@ final class Host implements ResourceDetector {
         }
         $host['host.name'] = php_uname('n');
         $host['host.arch'] = php_uname('m');
+        $host['os.type'] = strtolower(PHP_OS_FAMILY);
+        $host['os.description'] = php_uname();
+        $host['os.name'] = PHP_OS;
+        $host['os.version'] = php_uname('r');
 
         return new Resource(
             new Attributes($host),

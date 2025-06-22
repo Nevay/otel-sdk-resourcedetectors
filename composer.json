@@ -24,7 +24,6 @@
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Deployment",
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Extension",
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Host",
-                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Os",
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Process",
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\ProcessRuntime",
                 "Nevay\\OTelSDK\\Common\\ResourceDetector\\Service"
