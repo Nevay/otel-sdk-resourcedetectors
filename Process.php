@@ -16,9 +16,12 @@ use function restore_error_handler;
 use function set_error_handler;
 use const PHP_BINARY;
 use const PHP_OS_FAMILY;
+use const PHP_SAPI;
+use const PHP_VERSION;
 
 /**
  * @see https://opentelemetry.io/docs/specs/semconv/resource/process/#process
+ * @see https://opentelemetry.io/docs/specs/semconv/resource/process/#process-runtimes
  */
 final class Process implements ResourceDetector {
 
@@ -38,6 +41,9 @@ final class Process implements ResourceDetector {
         if (extension_loaded('posix') && ($user = \posix_getpwuid(\posix_geteuid())) !== false) {
             $process['process.owner'] = $user['name'];
         }
+
+        $process['process.runtime.name'] = PHP_SAPI;
+        $process['process.runtime.version'] = PHP_VERSION;
 
         return new Resource(
             new Attributes($process),
