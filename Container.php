@@ -22,7 +22,7 @@ final class Container implements ResourceDetector {
 
         return new Resource(
             new Attributes($container),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.25.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.34.0',
         );
     }
 

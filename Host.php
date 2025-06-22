@@ -34,7 +34,7 @@ final class Host implements ResourceDetector {
 
         return new Resource(
             new Attributes($host),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.25.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.34.0',
         );
     }
 
