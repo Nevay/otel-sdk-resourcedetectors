@@ -25,7 +25,7 @@ final class Composer implements ResourceDetector {
 
         return new Resource(
             new Attributes($composer),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.34.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.36.0',
         );
     }
 }
