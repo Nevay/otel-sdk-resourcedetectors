@@ -11,22 +11,17 @@
     "autoload": {
         "psr-4": {
             "Nevay\\OTelSDK\\Common\\ResourceDetector\\": ""
-        }
+        },
+        "files": [
+            "_register.php"
+        ]
     },
     "extra": {
         "branch-alias": {
             "dev-main": "0.1.x-dev"
         },
-        "spi": {
-            "Nevay\\OTelSDK\\Common\\ResourceDetector": [
-                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Composer",
-                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Container",
-                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Deployment",
-                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Extension",
-                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Host",
-                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Process",
-                "Nevay\\OTelSDK\\Common\\ResourceDetector\\Service"
-            ]
+        "spi-config": {
+            "autoload-files": true
         }
     }
 }
