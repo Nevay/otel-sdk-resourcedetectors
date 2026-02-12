@@ -13,7 +13,7 @@ final class Deployment implements ResourceDetector {
     public function getResource(): Resource {
         $deployment = [];
         if (($environment = $_SERVER['APP_ENV'] ?? '') !== '') {
-            $deployment['deployment.environment'] = $environment;
+            $deployment['deployment.environment.name'] = $environment;
         }
 
         return new Resource(
