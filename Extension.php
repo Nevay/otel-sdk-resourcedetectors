@@ -19,7 +19,7 @@ final class Extension implements ResourceDetector {
 
         return new Resource(
             new Attributes($ext),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.36.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
         );
     }
 }

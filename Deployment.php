@@ -13,12 +13,16 @@ final class Deployment implements ResourceDetector {
     public function getResource(): Resource {
         $deployment = [];
         if (($environment = $_SERVER['APP_ENV'] ?? '') !== '') {
-            $deployment['deployment.environment.name'] = $environment;
+            $deployment['deployment.environment.name'] = match ($environment) {
+                'prod' => 'production',
+                'dev' => 'development',
+                default => $environment,
+            };
         }
 
         return new Resource(
             new Attributes($deployment),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.36.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
         );
     }
 }

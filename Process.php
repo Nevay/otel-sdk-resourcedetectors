@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace Nevay\OTelSDK\Common\ResourceDetector;
 
+use DateTimeImmutable;
 use Nevay\OTelSDK\Common\Attributes;
 use Nevay\OTelSDK\Common\Resource;
 use Nevay\OTelSDK\Common\ResourceDetector;
@@ -11,9 +12,11 @@ use function explode;
 use function extension_loaded;
 use function file_get_contents;
 use function function_exists;
+use function getcwd;
 use function getmypid;
 use function restore_error_handler;
 use function set_error_handler;
+use function trim;
 use const PHP_BINARY;
 use const PHP_OS_FAMILY;
 use const PHP_SAPI;
@@ -27,6 +30,10 @@ final class Process implements ResourceDetector {
 
     public function getResource(): Resource {
         $process = [];
+
+        if ($requestTime = $_SERVER['REQUEST_TIME_FLOAT'] ?? null) {
+            $process['process.creation.time'] = DateTimeImmutable::createFromFormat('U.u', (string) $requestTime)->format('Y-m-d\TH:i:s.vp');
+        }
         $process['process.pid'] = getmypid();
         if (extension_loaded('posix')) {
             $process['process.parent_pid'] = \posix_getppid();
@@ -37,9 +44,19 @@ final class Process implements ResourceDetector {
         $process['process.executable.path'] = PHP_BINARY;
         $process['process.command'] = $commandLine[0];
         $process['process.command_args'] = $commandLine;
+        $process['process.args_count'] = count($commandLine);
 
         if (extension_loaded('posix') && ($user = \posix_getpwuid(\posix_geteuid())) !== false) {
             $process['process.owner'] = $user['name'];
+        }
+        if (extension_loaded('posix')) {
+            $process['process.interactive'] = \posix_isatty(0);
+        }
+        if (PHP_OS_FAMILY === 'Linux' && ($cgroups = self::read('/proc/self/cgroup')) !== null) {
+            $process['process.linux.cgroup'] = trim($cgroups);
+        }
+        if (($cwd = getcwd()) !== false) {
+            $process['process.working_directory'] = $cwd;
         }
 
         $process['process.runtime.name'] = PHP_SAPI;
@@ -47,7 +64,7 @@ final class Process implements ResourceDetector {
 
         return new Resource(
             new Attributes($process),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.36.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
         );
     }
 

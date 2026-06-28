@@ -17,12 +17,12 @@ final class Container implements ResourceDetector {
         $container = [];
 
         if ($containerId = self::cgroupV2()) {
-            $container['container.id'] ??= $containerId;
+            $container['container.id'] = $containerId;
         }
 
         return new Resource(
             new Attributes($container),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.36.0',
+            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
         );
     }
 
