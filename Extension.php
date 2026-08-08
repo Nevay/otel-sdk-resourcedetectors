@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace Nevay\OTelSDK\Common\ResourceDetector;
 
-use Nevay\OTelSDK\Common\Attributes;
+use Nevay\OTelSDK\Common\Entity;
 use Nevay\OTelSDK\Common\Resource;
 use Nevay\OTelSDK\Common\ResourceDetector;
 
@@ -11,15 +11,17 @@ use Nevay\OTelSDK\Common\ResourceDetector;
 final class Extension implements ResourceDetector {
 
     public function getResource(): Resource {
-        $ext = [];
+        $resource = Resource::create();
+
         if (($autoVersion = phpversion('opentelemetry')) !== false) {
-            $ext['telemetry.distro.name'] = 'opentelemetry';
-            $ext['telemetry.distro.version'] = $autoVersion;
+            $resource = $resource->withEntity(new Entity(
+                type: 'telemetry.distro',
+                identity: ['telemetry.distro.name' => 'opentelemetry'],
+                description: ['telemetry.distro.version' => $autoVersion],
+                schemaUrl: 'https://opentelemetry.io/schemas/1.43.0',
+            ));
         }
 
-        return new Resource(
-            new Attributes($ext),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
-        );
+        return $resource;
     }
 }

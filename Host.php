@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 namespace Nevay\OTelSDK\Common\ResourceDetector;
 
-use Nevay\OTelSDK\Common\Attributes;
 use Nevay\OTelSDK\Common\Resource;
 use Nevay\OTelSDK\Common\ResourceDetector;
 use function file_get_contents;
@@ -32,10 +31,7 @@ final class Host implements ResourceDetector {
         $host['os.name'] = PHP_OS;
         $host['os.version'] = php_uname('r');
 
-        return new Resource(
-            new Attributes($host),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
-        );
+        return Resource::create($host, schemaUrl: 'https://opentelemetry.io/schemas/1.43.0');
     }
 
     private function rawHostId(): ?string {

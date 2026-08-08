@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 namespace Nevay\OTelSDK\Common\ResourceDetector;
 
-use Nevay\OTelSDK\Common\Attributes;
 use Nevay\OTelSDK\Common\Resource;
 use Nevay\OTelSDK\Common\ResourceDetector;
 
@@ -20,9 +19,6 @@ final class Deployment implements ResourceDetector {
             };
         }
 
-        return new Resource(
-            new Attributes($deployment),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
-        );
+        return Resource::create($deployment, schemaUrl: 'https://opentelemetry.io/schemas/1.43.0');
     }
 }

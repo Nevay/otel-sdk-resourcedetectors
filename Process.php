@@ -2,7 +2,7 @@
 namespace Nevay\OTelSDK\Common\ResourceDetector;
 
 use DateTimeImmutable;
-use Nevay\OTelSDK\Common\Attributes;
+use Nevay\OTelSDK\Common\Entity;
 use Nevay\OTelSDK\Common\Resource;
 use Nevay\OTelSDK\Common\ResourceDetector;
 use function array_pop;
@@ -29,43 +29,51 @@ use const PHP_VERSION;
 final class Process implements ResourceDetector {
 
     public function getResource(): Resource {
-        $process = [];
+        $resource = Resource::create();
 
         if ($requestTime = $_SERVER['REQUEST_TIME_FLOAT'] ?? null) {
-            $process['process.creation.time'] = DateTimeImmutable::createFromFormat('U.u', (string) $requestTime)->format('Y-m-d\TH:i:s.vp');
-        }
-        $process['process.pid'] = getmypid();
-        if (extension_loaded('posix')) {
-            $process['process.parent_pid'] = \posix_getppid();
+            $process = new Entity(
+                type: 'process',
+                identity: [
+                    'process.creation.time' => DateTimeImmutable::createFromFormat('U.u', (string) $requestTime)->format('Y-m-d\TH:i:s.vp'),
+                    'process.pid' => getmypid(),
+                ],
+                schemaUrl: 'https://opentelemetry.io/schemas/1.43.0',
+            );
+
+            $commandLine = self::commandLine();
+            $process->description['process.executable.name'] = basename(PHP_BINARY);
+            $process->description['process.executable.path'] = PHP_BINARY;
+            $process->description['process.command'] = $commandLine[0];
+            $process->description['process.command_args'] = $commandLine;
+            $process->description['process.args_count'] = count($commandLine);
+
+            if (extension_loaded('posix') && ($user = \posix_getpwuid(\posix_geteuid())) !== false) {
+                $process->description['process.owner'] = $user['name'];
+            }
+            if (extension_loaded('posix')) {
+                $process->description['process.interactive'] = \posix_isatty(0);
+            }
+            if (PHP_OS_FAMILY === 'Linux' && ($cgroups = self::read('/proc/self/cgroup')) !== null) {
+                $process->description['process.linux.cgroup'] = trim($cgroups);
+            }
+            if (($cwd = getcwd()) !== false) {
+                $process->description['process.working_directory'] = $cwd;
+            }
+
+            $resource = $resource->withEntity($process);
         }
 
-        $commandLine = self::commandLine();
-        $process['process.executable.name'] = basename(PHP_BINARY);
-        $process['process.executable.path'] = PHP_BINARY;
-        $process['process.command'] = $commandLine[0];
-        $process['process.command_args'] = $commandLine;
-        $process['process.args_count'] = count($commandLine);
+        $resource = $resource->withEntity(new Entity(
+            type: 'process.runtime',
+            identity: [
+                'process.runtime.name' => PHP_SAPI,
+                'process.runtime.version' => PHP_VERSION,
+            ],
+            schemaUrl: 'https://opentelemetry.io/schemas/1.43.0',
+        ));
 
-        if (extension_loaded('posix') && ($user = \posix_getpwuid(\posix_geteuid())) !== false) {
-            $process['process.owner'] = $user['name'];
-        }
-        if (extension_loaded('posix')) {
-            $process['process.interactive'] = \posix_isatty(0);
-        }
-        if (PHP_OS_FAMILY === 'Linux' && ($cgroups = self::read('/proc/self/cgroup')) !== null) {
-            $process['process.linux.cgroup'] = trim($cgroups);
-        }
-        if (($cwd = getcwd()) !== false) {
-            $process['process.working_directory'] = $cwd;
-        }
-
-        $process['process.runtime.name'] = PHP_SAPI;
-        $process['process.runtime.version'] = PHP_VERSION;
-
-        return new Resource(
-            new Attributes($process),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
-        );
+        return $resource;
     }
 
     private static function commandLine(): array {

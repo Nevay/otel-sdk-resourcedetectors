@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 namespace Nevay\OTelSDK\Common\ResourceDetector;
 
-use Nevay\OTelSDK\Common\Attributes;
 use Nevay\OTelSDK\Common\Resource;
 use Nevay\OTelSDK\Common\ResourceDetector;
 use function fgets;
@@ -20,10 +19,7 @@ final class Container implements ResourceDetector {
             $container['container.id'] = $containerId;
         }
 
-        return new Resource(
-            new Attributes($container),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
-        );
+        return Resource::create($container, schemaUrl: 'https://opentelemetry.io/schemas/1.43.0');
     }
 
     private static function cgroupV2(): ?string {

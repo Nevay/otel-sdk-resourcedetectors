@@ -2,7 +2,7 @@
 namespace Nevay\OTelSDK\Common\ResourceDetector;
 
 use Composer\InstalledVersions;
-use Nevay\OTelSDK\Common\Attributes;
+use Nevay\OTelSDK\Common\Entity;
 use Nevay\OTelSDK\Common\Resource;
 use Nevay\OTelSDK\Common\ResourceDetector;
 
@@ -12,20 +12,23 @@ use Nevay\OTelSDK\Common\ResourceDetector;
 final class Composer implements ResourceDetector {
 
     public function getResource(): Resource {
-        $composer = [];
-        $composer['service.name'] = InstalledVersions::getRootPackage()['name'];
-        $composer['service.version'] = InstalledVersions::getRootPackage()['pretty_version'];
+        $resource = Resource::create();
 
-        if ($composer['service.name'] === '__root__') {
-            unset($composer['service.name']);
-        }
-        if ($composer['service.version'] === '1.0.0+no-version-set') {
-            unset($composer['service.version']);
+        $package = InstalledVersions::getRootPackage();
+        if ($package['name'] !== '__root__') {
+            $service = new Entity(
+                type: 'service',
+                identity: ['service.name' => $package['name']],
+                schemaUrl: 'https://opentelemetry.io/schemas/1.43.0',
+            );
+
+            if ($package['pretty_version'] !== '1.0.0+no-version-set') {
+                $service->description['service.version'] = $package['pretty_version'];
+            }
+
+            $resource = $resource->withEntity($service);
         }
 
-        return new Resource(
-            new Attributes($composer),
-            schemaUrl: 'https://opentelemetry.io/schemas/1.42.0',
-        );
+        return $resource;
     }
 }
