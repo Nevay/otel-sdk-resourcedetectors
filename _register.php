@@ -12,6 +12,7 @@ if (!class_exists(ServiceLoader::class)) {
 ServiceLoader::register(ResourceDetector::class, Composer::class);
 ServiceLoader::register(ResourceDetector::class, Container::class);
 ServiceLoader::register(ResourceDetector::class, Deployment::class);
+ServiceLoader::register(ResourceDetector::class, EnvEntity::class);
 ServiceLoader::register(ResourceDetector::class, Extension::class);
 ServiceLoader::register(ResourceDetector::class, Host::class);
 ServiceLoader::register(ResourceDetector::class, Process::class);
