@@ -9,7 +9,6 @@ if (!class_exists(ServiceLoader::class)) {
     return;
 }
 
-ServiceLoader::register(ResourceDetector::class, Composer::class);
 ServiceLoader::register(ResourceDetector::class, Container::class);
 ServiceLoader::register(ResourceDetector::class, Deployment::class);
 ServiceLoader::register(ResourceDetector::class, EnvEntity::class);
