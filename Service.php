@@ -5,13 +5,17 @@ use Composer\InstalledVersions;
 use Nevay\OTelSDK\Common\Entity;
 use Nevay\OTelSDK\Common\Resource;
 use Nevay\OTelSDK\Common\ResourceDetector;
+use Nevay\OTelSDK\Configuration\Env\EnvSourceReader;
+use Nevay\OTelSDK\Configuration\Env\ServerEnvSource;
 
 final class Service implements ResourceDetector {
 
     public function getResource(): Resource {
         $resource = Resource::create();
 
-        if (($serviceName = $_SERVER['OTEL_SERVICE_NAME'] ?? null) !== null) {
+        $env = new EnvSourceReader([new ServerEnvSource()]);
+
+        if (($serviceName = $env->read('OTEL_SERVICE_NAME')) !== null) {
             $resource = $resource->withEntity(new Entity(
                 type: 'service',
                 identity: ['service.name' => $serviceName],
